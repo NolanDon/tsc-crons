@@ -1,0 +1,33 @@
+name: 🔁 Notify Sweep (daily)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # 03:00 UTC daily (~10:00 Asia/Bangkok)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notify-all
+  cancel-in-progress: true
+
+jobs:
+  call-notify-daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call notify endpoint (tier=daily)
+        shell: bash
+        env:
+          BASE_URL: ${{ secrets.BACKEND_BASE_URL }}    
+          PATH_PART: ${{ secrets.NOTIFY_PATH }}        
+          HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}
+          HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}   
+        run: |
+          set -euo pipefail
+          URL="${BASE_URL%/}${PATH_PART}"
+          curl -sSf -X POST "$URL" \
+            -H "content-type: application/json" \
+            -H "$HDR_NAME: $HDR_VALUE" \
+            --data '{"tier":"daily"}'
