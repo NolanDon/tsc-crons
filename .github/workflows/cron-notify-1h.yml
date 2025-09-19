@@ -1,4 +1,4 @@
-name: 🔁 Notify Sweep (every 10m)
+name: 🔁 Notify Sweep (every 1h)
 
 on:
   schedule:
