@@ -1,0 +1,39 @@
+name: 🔁 Notify Sweep (every 10m)
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # UTC
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: "Tier label (hourly|4hr|daily)"
+        required: false
+        default: "hourly"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notify-all
+  cancel-in-progress: true
+
+jobs:
+  call-notify-endpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call notify endpoint
+        shell: bash
+        env:
+          BASE_URL: ${{ secrets.BACKEND_BASE_URL }}            
+          PATH_PART: ${{ secrets.NOTIFY_PATH }} 
+          HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}        
+          HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}           
+          TIER: ${{ github.event.inputs.tier || 'hourly' }}
+        run: |
+          set -euo pipefail
+          URL="${BASE_URL%/}${PATH_PART}"
+          curl -sSf -X POST "$URL" \
+            -H "content-type: application/json" \
+            -H "$HDR_NAME: $HDR_VALUE" \
+            --data "{\"tier\":\"${TIER}\"}"

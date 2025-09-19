@@ -1,0 +1,33 @@
+name: 🧹 Prune Screenshots (daily)
+
+on:
+  schedule:
+    - cron: "19 4 * * *"   # 04:19 UTC daily
+  workflow_dispatch: {}     # optional manual run
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prune-screenshots
+  cancel-in-progress: true
+
+jobs:
+  call-prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Call prune endpoint
+        shell: bash
+        env:
+          BASE_URL: ${{ secrets.BACKEND_BASE_URL }}         
+          PATH_PART: ${{ secrets.PRUNE_PATH }}              
+          HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}     
+          HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}        
+        run: |
+          set -euo pipefail
+          URL="${BASE_URL%/}${PATH_PART}"
+          curl -sSf -X POST "$URL" \
+            -H "content-type: application/json" \
+            -H "$HDR_NAME: $HDR_VALUE" \
+            --data "{}"

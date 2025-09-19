@@ -1,0 +1,33 @@
+name: 🎁 Promo Sweep (daily)
+
+on:
+  schedule:
+    - cron: "7 3 * * *"   # 03:07 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: promo-sweep
+  cancel-in-progress: true
+
+jobs:
+  call-promo-sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Call promo sweep endpoint
+        shell: bash
+        env:
+          BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+          PATH_PART: ${{ secrets.PROMO_SWEEP_PATH }}
+          HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}
+          HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}
+        run: |
+          set -euo pipefail
+          URL="${BASE_URL%/}${PATH_PART}"
+          curl -sSf -X POST "$URL" \
+            -H "content-type: application/json" \
+            -H "$HDR_NAME: $HDR_VALUE" \
+            --data '{"force":true,"debug":true}'
