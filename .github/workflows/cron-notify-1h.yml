@@ -3,7 +3,10 @@ name: 🔁 Notify Sweep (every 1h)
 on:
   schedule:
     # - cron: "*/10 * * * *"   # UTC
-    - cron: "0 * * * *"   # every hour, at minute 0 (UTC)
+    # ── Hourly sweep ───────────────────────────────────────────────────────────────
+      # Runs at minute 11 of *every* hour in UTC.
+      # Fires at: 00:11, 01:11, 02:11, …, 23:11 (UTC) — 24× per day.
+    - cron: "11 * * * *"   # every hour, at minute 0 (UTC)
   workflow_dispatch:
     inputs:
       tier:

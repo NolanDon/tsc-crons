@@ -2,7 +2,10 @@ name: 🔁 Notify Sweep (every 4h)
 
 on:
   schedule:
-    - cron: "0 */4 * * *"   # every 4 hours at minute 0 (UTC)
+    # ── 4-hour sweep ───────────────────────────────────────────────────────────────
+    # Runs every 4 hours, at minute 07, starting from midnight UTC.
+    # Fires at: 00:07, 04:07, 08:07, 12:07, 16:07, 20:07 (UTC) — 6× per day.
+    - cron: "07 */4 * * *"   # every 4 hours at minute 7 (UTC)
   workflow_dispatch: {}
 
 permissions:

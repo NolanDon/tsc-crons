@@ -2,7 +2,11 @@ name: 🔁 Notify Sweep (daily)
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # 03:00 UTC daily (~10:00 Asia/Bangkok)
+    # ── Daily sweep ────────────────────────────────────────────────────────────────
+    # Runs once per day at 03:00 UTC (no DST).
+    # Fires at: 03:00 every day (UTC).
+    # Tip: if you want to stagger with other jobs, change the minute (e.g. "17 3 * * *").
+    - cron: "0 3 * * *"
   workflow_dispatch: {}
 
 permissions:
