@@ -1,9 +1,9 @@
-name: 🧹 Prune Screenshots (daily)
+name: 🧹 Prune Screenshots (4h)
 
 on:
   schedule:
-    - cron: "19 4 * * *"   # 04:19 UTC daily
-  workflow_dispatch: {}     # optional manual run
+    - cron: "0 */4 * * *"   # every 4 hours at minute 0 (UTC)
+  workflow_dispatch: {}
 
 permissions:
   contents: read
