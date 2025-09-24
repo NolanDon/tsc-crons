@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: promo-sweep
+  group: notify-promo
   cancel-in-progress: true
 
 jobs:

@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: notify-all
+  group: notify-4h
   cancel-in-progress: true
 
 jobs:
