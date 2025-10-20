@@ -33,4 +33,4 @@ jobs:
           curl -sSf -X POST "$URL" \
             -H "content-type: application/json" \
             -H "$HDR_NAME: $HDR_VALUE" \
-            --data '{"tier":"4hr"}'
+            --data '{"tier":"every4hr"}'
