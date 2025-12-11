@@ -27,7 +27,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Build URL like: https://backend/v1/internal/render-maintenance
           URL="${BASE_URL%/}/v1/internal/render-maintenance"
 
           echo "Calling $URL"
