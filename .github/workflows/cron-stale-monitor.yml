@@ -27,7 +27,7 @@ jobs:
               run: |
                   set -euo pipefail
 
-                  URL="${BASE_URL%/}/v1/internal/render-maintenance"
+                  URL="${BASE_URL%/}/v1/render-maintenance"
 
                   echo "Calling $URL"
 
