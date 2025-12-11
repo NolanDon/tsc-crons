@@ -1,38 +1,38 @@
 name: ♻ Render Maintenance (every 5m)
 
 on:
-  schedule:
-    # Every 5 minutes (UTC)
-    - cron: "*/5 * * * *"
-  workflow_dispatch: {}
+    schedule:
+        # Every 5 minutes (UTC)
+        - cron: "*/5 * * * *"
+    workflow_dispatch: {}
 
 permissions:
-  contents: read
+    contents: read
 
 concurrency:
-  group: render-maintenance-5m
-  cancel-in-progress: true
+    group: render-maintenance-5m
+    cancel-in-progress: true
 
 jobs:
-  call-render-maintenance:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Call render maintenance endpoint
-        shell: bash
-        env:
-          BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
-          HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}
-          HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}
-        run: |
-          set -euo pipefail
+    call-render-maintenance:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        steps:
+            - name: Call render maintenance endpoint
+              shell: bash
+              env:
+                  BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+                  HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}
+                  HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}
+              run: |
+                  set -euo pipefail
 
-          URL="${BASE_URL%/}/v1/internal/render-maintenance"
+                  URL="${BASE_URL%/}/v1/internal/render-maintenance"
 
-          echo "Calling $URL"
+                  echo "Calling $URL"
 
-          curl -sSf -X POST "$URL" \
-            -H "content-type: application/json" \
-            -H "$HDR_NAME: $HDR_VALUE" \
-            --data '{}' \
-            && echo "Render maintenance succeeded"
+                  curl -sSf -X POST "$URL" \
+                    -H "content-type: application/json" \
+                    -H "$HDR_NAME: $HDR_VALUE" \
+                    --data '{}' \
+                    && echo "Render maintenance succeeded"
