@@ -24,10 +24,11 @@ jobs:
                   BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
                   HDR_NAME: ${{ secrets.INTERNAL_HEADER_NAME }}
                   HDR_VALUE: ${{ secrets.INTERNAL_API_KEY }}
+                  STALE_ROUTE_PATH: ${{ secrets.STALE_ROUTE_PATH }}
               run: |
                   set -euo pipefail
 
-                  URL="${BASE_URL%/}/v1/render-maintenance"
+                  URL="${BASE_URL%/}${STALE_ROUTE_PATH}"
 
                   echo "Calling $URL"
 
